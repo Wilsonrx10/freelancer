@@ -12,6 +12,7 @@
         "ext-json": "*",
         "doctrine/dbal": "^3.2",
         "fideloper/proxy": "^4.0",
+        "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.4",
         "laracasts/flash": "^3.0",
         "laravel/framework": "^8.0",

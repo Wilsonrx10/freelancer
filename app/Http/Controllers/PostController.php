@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
-    use Authorizable;
 
     /**
      * Comentário | Exibir listagem
@@ -103,11 +102,7 @@ class PostController extends Controller
 
         $me = $request->user();
 
-        if( $me->hasRole('Admin') ) {
-            $post = Post::findOrFail($post->id);
-        } else {
-            $post = Post::findOrFail($post->id)->where('user_id' ,Auth::user()->id);
-        }
+        $post = Post::findOrFail($post->id);
 
         $post->update($request->all());
 
