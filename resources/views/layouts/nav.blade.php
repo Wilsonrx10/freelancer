@@ -59,9 +59,9 @@
                     @endcan
                 @endif
             @endauth
-            <li class="nav-item {{ Request::is('pagamentos*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('pagamentos.index') }}">
-                    Pagamentos
+            <li class="nav-item {{ Request::is('post*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('posts.index') }}">
+                    Post
                 </a>
             </li>
         </ul>
