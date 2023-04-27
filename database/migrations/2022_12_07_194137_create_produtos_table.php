@@ -45,7 +45,7 @@ class CreateProdutosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produtos');
         Schema::dropIfExists('produto_externos');
+        Schema::dropIfExists('produtos');
     }
 }

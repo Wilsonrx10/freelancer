@@ -64,6 +64,11 @@
                     Post
                 </a>
             </li>
+            <li class="nav-item {{ Request::is('pagamentos*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('pagamentos.index') }}">
+                    Pagamentos
+                </a>
+            </li>
         </ul>
 
         <!-- Right Side Of Navbar -->

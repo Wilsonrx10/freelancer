@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Authorizable;
 use App\Constants;
 use App\Post;
 use Illuminate\Http\Request;

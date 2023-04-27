@@ -15,6 +15,9 @@ class Constants
     const inativo = 0;
     const ativo = 1;
 
+    const PlataformaKiwiFy = 1;
+    const PlataformaManual = 2;
+
     const nao = 0;
     const sim = 1;
     const simComUsuario = 2;

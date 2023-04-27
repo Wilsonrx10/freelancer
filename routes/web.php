@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PagamentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 
@@ -24,3 +25,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('posts', PostController::class);
+Route::resource('pagamentos', PagamentoController::class);
+Route::resource('users', UserController::class);

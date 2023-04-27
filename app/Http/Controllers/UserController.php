@@ -7,7 +7,6 @@ use App\Helper;
 use App\Http\Controllers\API\AuthController;
 use App\User;
 use App\Role;
-use App\Authorizable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +19,9 @@ use DateTime;
 
 class UserController extends Controller implements MustVerifyEmail
 {
-    use Authorizable;
 
-    private $produtoController;
 
     public function __construct() {
-        $this->produtoController = new ProdutoController();
     }
 
     /**
@@ -140,9 +136,7 @@ class UserController extends Controller implements MustVerifyEmail
                 && $user->id_tipo_usuario == Constants::tipoUsuarioCliente
             )
             || Auth::user()->id == $id) {
-            $roles = RoleController::getRolesUser();
-            $permissions = RoleController::getPermissionsUser();
-            return view('user.edit', compact('user', 'roles', 'permissions'));
+            return view('user.edit', compact('user'));
         } else {
             flash()->error('Acesso restrito.');
             return \Redirect::back();
