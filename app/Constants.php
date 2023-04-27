@@ -10,6 +10,8 @@ class Constants
     const tipoUsuarioCliente = 2;
     const tipoUsuarioProfissional = 3;
 
+    const tipoProdutoGolMachine = 2;
+
     const inativo = 0;
     const ativo = 1;
 
