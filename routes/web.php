@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\PagamentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
-
+use App\Http\Controllers\ProdutoController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('posts', PostController::class);
 Route::resource('pagamentos', PagamentoController::class);
 Route::resource('users', UserController::class);
+
+Route::resource('empresa', EmpresasController::class);
+
+Route::resource('produto', ProdutoController::class);
