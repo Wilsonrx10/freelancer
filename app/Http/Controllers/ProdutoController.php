@@ -55,7 +55,7 @@ class ProdutoController extends Controller
 
         if ($request->file('icone')) {
 
-            $request->file('icone')->storeAs('public/product/image', $filename);
+            $request->file('icone')->storeAs('public/icone/image', $filename);
         }
 
         Produto::create(array_merge($request->all(), ['icone' => $filename]));

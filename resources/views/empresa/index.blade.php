@@ -45,7 +45,7 @@
                                 'entity' => 'empresa',
                                 'id' => $item->id
                             ])
-                            <a href="{{ route('userEmpresa', ['id' => $item->id]) }}">Vincular usuário</a>
+                            <a href="{{ route('userEmpresa', ['empresa' => $item->id]) }}">Vincular usuário</a>
                         </td>
                     </tr>
                 @endforeach

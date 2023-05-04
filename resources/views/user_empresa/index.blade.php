@@ -114,14 +114,14 @@
                          'Content-Type': 'application/json'
                      },
                      body: JSON.stringify({
-                         empresa_id: 1,
+                         empresa_id: @json($empresa->id),
                          selectedUsers: selectedUsers,
                          deselectUsers: deselectUsers
                      })
                  })
                  .then(function(response) {
                      if (response.ok) {
-                         return location.reload();
+                        //  return location.reload();
                      } else {
                          throw new Error('Erro na solicitação.');
                      }
