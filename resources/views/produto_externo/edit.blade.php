@@ -12,7 +12,7 @@
                     <h3>Editar</h3>
                 </div>
                 <div class="col-md-7 page-action text-right">
-                    <a href="{{ route('produto.index') }}" class="btn btn-default btn-sm"> <i class="fa fa-arrow-left"></i> Voltar</a>
+                    <a href="{{ route('ProdutoExterno.index') }}" class="btn btn-default btn-sm"> <i class="fa fa-arrow-left"></i> Voltar</a>
                 </div>
             </div>
         </div>
@@ -22,8 +22,8 @@
                     <div class="col-lg-12">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content">
-                                {!! Form::model($produto, ['method' => 'PUT', 'route' => ['produto.update',  $produto->id ] ]) !!}
-                                    @include('produto._form')
+                                {!! Form::model($ProdutoExterno, ['method' => 'PUT', 'route' => ['ProdutoExterno.update',  $ProdutoExterno->id ] ]) !!}
+                                    @include('produto_externo._form')
                                     <!-- Submit Form Button -->
                                     {!! Form::submit('Salvar', ['class' => 'btn btn-primary']) !!}
                                 {!! Form::close() !!}

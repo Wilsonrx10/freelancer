@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\DominioProdutosController;
 use App\Http\Controllers\EmpresasController;
 use App\Http\Controllers\PagamentoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\ProdutoExternoController;
+use App\Http\Controllers\ProdutoTelegramCanaisController;
+use App\Http\Controllers\UsuarioEmpresaController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -31,5 +35,13 @@ Route::resource('pagamentos', PagamentoController::class);
 Route::resource('users', UserController::class);
 
 Route::resource('empresa', EmpresasController::class);
-
 Route::resource('produto', ProdutoController::class);
+
+Route::controller(UsuarioEmpresaController::class)->group(function(){
+    Route::get('userEmpresa/{empresa}','index')->name('userEmpresa');
+    Route::post('saveUserEmpresa','update')->name('saveUserEmpresa');
+});
+
+Route::resource('dominioProduto',DominioProdutosController::class);
+Route::resource('ProdutoExterno',ProdutoExternoController::class);
+Route::resource('ProdutoTelegram',ProdutoTelegramCanaisController::class);

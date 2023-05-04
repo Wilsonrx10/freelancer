@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Constants;
-use App\User;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

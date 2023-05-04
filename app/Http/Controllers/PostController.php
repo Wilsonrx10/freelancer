@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $result =Post::select(
+        $result = Post::select(
             'posts.id',
             'posts.user_id',
             'posts.created_at',

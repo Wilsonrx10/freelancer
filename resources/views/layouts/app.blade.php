@@ -197,13 +197,17 @@
             }
         });
     </script>
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/DataTables/css/datatables.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{url('assets/tema/plugins/themify-icons/themify-icons.css')}}">
+    <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
+
+
 </head>
 <body class="body-wrapper" data-spy="scroll" data-target=".privacy-nav">
-@include('sweetalert::alert')
+ @include('sweetalert::alert')
 <div id="app">
     @include('layouts.nav')
     <link href="{{url('assets/tema/css/style.css')}}" rel="stylesheet">

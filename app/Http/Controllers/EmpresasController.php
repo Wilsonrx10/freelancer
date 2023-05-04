@@ -14,11 +14,19 @@ class EmpresasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $supplier = Empresa::paginate();
+        $company = Empresa::paginate();
+
+        if ($request->input('search')) {
+            $company = Empresa::query()
+            ->where('nome_empresa', 'like', '%' . $request->input('search') . '%')
+            ->Orwhere('id', 'like', '%' . $request->input('search') . '%')
+            ->Orwhere('cnpj', 'like', '%' . $request->input('search') . '%')
+            ->Orwhere('status', 'like', '%' . $request->input('search') . '%')->paginate();
+        }
         
-        return view('empresa.index',compact('supplier'));
+        return view('empresa.index',compact('company'));
     }
 
     /**
@@ -104,9 +112,9 @@ class EmpresasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Empresa $supplier)
+    public function destroy(Empresa $empresa)
     {
-        $supplier->delete();
+        $empresa->delete();
 
         flash()->success('Empresa deletado.');
 

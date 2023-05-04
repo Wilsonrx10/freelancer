@@ -18,7 +18,7 @@ class CreateProdutoTelegramCanaisTable extends Migration
         Schema::create('produto_telegram_canais', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedTinyInteger('id_produto');
-            $table->string('id_telegram_canal');
+            $table->string('code_telegram_canal');
             $table->string('nome_telegram_canal');
             $table->string('convite')->nullable();
             $table->tinyInteger('canal_admin')->default(Constants::inativo);

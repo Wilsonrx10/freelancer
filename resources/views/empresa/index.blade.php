@@ -8,7 +8,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-5">
-                    <h3 class="modal-title">{{ Illuminate\Support\Str::plural('Empresas', $supplier->count()) }} </h3>
+                    <h3 class="modal-title">{{ Illuminate\Support\Str::plural('Empresas', $company->count()) }} </h3>
                 </div>
                 <div class="col-md-7 page-action text-right">
                     <a href="{{ route('empresa.create') }}" class="btn btn-primary btn-sm"> <i class="glyphicon glyphicon-plus-sign"></i> Novo</a>
@@ -34,7 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($supplier as $item)
+                @foreach($company as $item)
                     <tr>
                         <td>{{ $item->nome_empresa }}</td>
                         <td>{{ $item->cnpj }}</td>
@@ -45,6 +45,7 @@
                                 'entity' => 'empresa',
                                 'id' => $item->id
                             ])
+                            <a href="{{ route('userEmpresa', ['id' => $item->id]) }}">Vincular usuário</a>
                         </td>
                     </tr>
                 @endforeach
@@ -52,7 +53,7 @@
             </table>
 
             <div class="text-center">
-                {{ $supplier->links() }}
+                {{ $company->links() }}
             </div>
         </div>
     </div>
