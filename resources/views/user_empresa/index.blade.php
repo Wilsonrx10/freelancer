@@ -121,7 +121,7 @@
                  })
                  .then(function(response) {
                      if (response.ok) {
-                        //  return location.reload();
+                        return location.reload();
                      } else {
                          throw new Error('Erro na solicitação.');
                      }

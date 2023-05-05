@@ -18,8 +18,8 @@ class CreateUsuarioEmpresasTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('empresa_id');
-            $table->foreign('empresa_id')->references('id')->on('empresas');
-            $table->enum('status',[0,1])->default(0);
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
+            $table->enum('status',[0,1])->default(1);
             $table->timestamps();
         });
     }

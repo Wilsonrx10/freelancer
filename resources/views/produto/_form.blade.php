@@ -5,6 +5,26 @@
     @if ($errors->has('nome_produto')) <p class="help-block">{{ $errors->first('nome_produto') }}</p> @endif
 </div>
 
+<!-- Status Form select -->
+<div class="form-group @if ($errors->has('status')) has-error @endif">
+    {!! Form::label('status', 'status') !!}
+    {!! Form::select('status', [
+        '1' => 'Ativo',
+        '0' => 'Inativo'
+    ], null, ['class' => 'form-control', 'placeholder' => 'Selecione um status']) !!}    
+    @if ($errors->has('status')) <p class="help-block">{{ $errors->first('status') }}</p> @endif
+</div>
+
+<!-- modo_analise Form select -->
+<div class="form-group @if ($errors->has('modo_analise')) has-error @endif">
+    {!! Form::label('modo_analise', 'modo_analise') !!}
+    {!! Form::select('modo_analise', [
+        '1' => 'Ativo',
+        '0' => 'Inativo'
+    ], null, ['class' => 'form-control', 'placeholder' => 'Selecione um modo_analise']) !!}    
+    @if ($errors->has('modo_analise')) <p class="help-block">{{ $errors->first('modo_analise') }}</p> @endif
+</div>
+
 <!-- description Form Input -->
 <div class="form-group @if ($errors->has('descricao')) has-error @endif">
     {!! Form::label('descricao', 'descricao') !!}

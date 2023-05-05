@@ -18,6 +18,17 @@
     @if ($errors->has('convite')) <p class="help-block">{{ $errors->first('convite') }}</p> @endif
 </div>
 
+
+<!-- Status Form select -->
+<div class="form-group @if ($errors->has('status')) has-error @endif">
+    {!! Form::label('status', 'status') !!}
+    {!! Form::select('status', [
+        '1' => 'Ativo',
+        '0' => 'Inativo'
+    ], null, ['class' => 'form-control', 'placeholder' => 'Selecione um status']) !!}    
+    @if ($errors->has('status')) <p class="help-block">{{ $errors->first('status') }}</p> @endif
+</div>
+
 <!-- Product Form Select -->
 <div class="form-group @if ($errors->has('id_produto')) has-error @endif">
     {!! Form::label('produto', 'Produto') !!}

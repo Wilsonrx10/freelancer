@@ -32,8 +32,11 @@ class UsuarioEmpresaController extends Controller
                     UsuarioEmpresa::create([
                         'user_id' => $value,
                         'empresa_id' => $request->empresa_id,
-                        'status' => 1
+                        'status' => '1'
                     ]);
+                } else {
+                    $data->status = '1';
+                    $data->save();
                 }
             }
         }
@@ -43,7 +46,7 @@ class UsuarioEmpresaController extends Controller
                 $data = UsuarioEmpresa::where('user_id', $value)->where('empresa_id', $request->empresa_id)->first();
 
                 if ($data) {
-                    $data->status = 0;
+                    $data->status = '0';
                     $data->save();
                 }
             }

@@ -54,7 +54,8 @@ class DominioProdutosController extends Controller
     {
         $request->validate([
             'url' => 'required|url|unique:dominio_produtos',
-            'produto' => 'required',
+            'id_produto' => 'required',
+            'status' => 'required'
         ]);
 
         DominioProduto::create([
@@ -101,14 +102,11 @@ class DominioProdutosController extends Controller
     public function update(Request $request, DominioProduto $dominioProduto)
     {
         $request->validate([
-            'url' => 'required|url|unique:dominio_produtos',
-            'produto' => 'required',
+            'url' => 'required|url|unique:dominio_produtos,url,'.$dominioProduto->id,
+            'id_produto' => 'required',
         ]);
 
-        $dominioProduto->update([
-            'id_produto' => $request->input('produto'),
-            'url' => $request->input('url')
-        ]);
+        $dominioProduto->update($request->all());
 
         flash('Dominio de produto Atualizado com sucesso');
 

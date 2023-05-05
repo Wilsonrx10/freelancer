@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Empresa;
+use App\Models\UsuarioEmpresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -49,14 +50,11 @@ class EmpresasController extends Controller
     {
         $request->validate([
             'nome_empresa' => 'required|string',
-            'cnpj' => 'required|min:14|max:14|unique:empresas'
+            'cnpj' => 'required|min:14|max:14|unique:empresas',
+            'status' => 'required'
         ]);
 
-        Empresa::create([
-            'nome_empresa' => $request->nome_empresa,
-            'cnpj' => $request->cnpj,
-            'status' => 0
-        ]);
+        Empresa::create($request->all());
 
         flash('Empresa Cadastrada.');
 
@@ -96,7 +94,8 @@ class EmpresasController extends Controller
     {
         $request->validate([
             'nome_empresa' => 'required|string',
-            'cnpj' => 'required|min:14|max:14|unique:empresas'
+            'cnpj' => 'required|min:14|max:14|unique:empresas,cnpj,'.$empresa->id,
+            'status' => 'required'
         ]);
 
         $empresa->update($request->all());

@@ -48,7 +48,9 @@ class ProdutoController extends Controller
         $request->validate([
             'nome_produto' => 'required|string',
             'descricao' => 'required|string',
-            'icone' =>  'required|file'
+            'icone' =>  'required|file',
+            'status' => 'required',
+            'modo_analise' => 'required'
         ]);
 
         $filename = $request->file('icone')->getClientOriginalName();
@@ -96,6 +98,13 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, Produto $produto)
     {
+        $request->validate([
+            'nome_produto' => 'required|string',
+            'descricao' => 'required|string',
+            'status' => 'required',
+            'modo_analise' => 'required'
+        ]);
+
         $produto->update($request->all());
 
         flash('Produto atualizado com sucesso.');

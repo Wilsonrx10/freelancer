@@ -18,7 +18,7 @@ class CreateDominioProdutosTable extends Migration
             $table->unsignedTinyInteger('id_produto');
             $table->foreign('id_produto')->references('id')->on('produtos')->onDelete('cascade');
             $table->string('url')->unique();
-            $table->enum('status',[0,1]);
+            $table->enum('status',[0,1])->default(1);
             $table->timestamps();
         });
     }

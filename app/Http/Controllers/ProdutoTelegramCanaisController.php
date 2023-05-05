@@ -60,6 +60,7 @@ class ProdutoTelegramCanaisController extends Controller
             'id_produto' => 'required',
             'nome_telegram_canal' => 'required|string',
             'convite'=> 'required|string',
+            'status' => 'required'
         ]);
 
         $canal_admin = $request->user()->id_tipo_usuario == Constants::tipoUsuarioAdmin ? 1 : 0;
@@ -113,6 +114,7 @@ class ProdutoTelegramCanaisController extends Controller
             'id_produto' => 'required',
             'nome_telegram_canal' => 'required|string',
             'convite'=> 'required|string',
+            'status' => 'required'
         ]);
 
         $ProdutoTelegramCanais = ProdutoTelegramCanais::findOrFail($id);
@@ -130,8 +132,10 @@ class ProdutoTelegramCanaisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProdutoTelegramCanais $ProdutoTelegramCanais)
+    public function destroy($id)
     {
+        $ProdutoTelegramCanais = ProdutoTelegramCanais::findOrFail($id);
+
         $ProdutoTelegramCanais->delete();
 
         flash('Produto telegram deletado');

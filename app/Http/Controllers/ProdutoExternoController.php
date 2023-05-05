@@ -55,13 +55,15 @@ class ProdutoExternoController extends Controller
         $request->validate([
             'codigo_produto_externo' => 'required',
             'nome_produto_externo' => 'required|string',
-            'produto' => 'required'
+            'id_produto' => 'required',
+            'status' => 'required'
         ]);
 
         ProdutoExterno::create([
             'codigo_produto_externo' => $request->input('codigo_produto_externo'),
             'nome_produto_externo' => $request->input('nome_produto_externo'),
-            'id_produto' => $request->input('produto')
+            'id_produto' => $request->input('produto'),
+            'status' => $request->input('status')
         ]);
 
         flash('Produto Externo Adicionado');
@@ -106,14 +108,10 @@ class ProdutoExternoController extends Controller
         $request->validate([
             'codigo_produto_externo' => 'required',
             'nome_produto_externo' => 'required|string',
-            'produto' => 'required'
+            'id_produto' => 'required'
         ]);
 
-        $ProdutoExterno->update([
-            'codigo_produto_externo' => $request->input('codigo_produto_externo'),
-            'nome_produto_externo' => $request->input('nome_produto_externo'),
-            'id_produto' => $request->input('produto')
-        ]);
+        $ProdutoExterno->update($request->all());
 
         flash('Produto Externo Atualizado');
 
