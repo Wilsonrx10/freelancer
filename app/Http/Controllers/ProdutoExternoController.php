@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Produto;
-use App\ProdutoExterno;
+use App\Models\Produto;
+use App\Models\ProdutoExterno;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -18,19 +18,26 @@ class ProdutoExternoController extends Controller
     {
         $produtoExterno = ProdutoExterno::paginate();
 
-        if ($request->input('search')) {
+        if (!empty(request()->all())) {
 
-            $produtoExterno = ProdutoExterno::query()
-            ->join('produtos', 'produto_externos.id_produto', '=', 'produtos.id')
-                ->where(function($query) use ($request) {
-                $query->where('produto_externos.nome_produto_externo', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produto_externos.codigo_produto_externo', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produto_externos.status', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produtos.nome_produto', 'like', '%' . $request->input('search') . '%');
-            })->paginate();
+            $query = ProdutoExterno::query();
+
+            $camposPesquisa = array_keys(array_filter($request->only(['codigo_produto_externo', 'nome_produto_externo', 'status', 'id_produto']), function ($value, $key) {
+                return filled($value);
+            }, ARRAY_FILTER_USE_BOTH));
+
+            foreach ($camposPesquisa as $campo) {
+                $valor = $request->input($campo);
+                if ($campo == 'codigo_produto_externo' || $campo == 'nome_produto_externo') {
+                    $query->where($campo, 'like', '%' . $valor . '%');
+                } else {
+                    $query->where($campo, $valor);
+                }
+            }
+            $produtoExterno = $query->paginate();
         }
 
-        return view('produto_externo.index',compact('produtoExterno'));
+        return view('produto_externo.index', compact('produtoExterno'));
     }
 
     /**
@@ -41,7 +48,7 @@ class ProdutoExternoController extends Controller
     public function create()
     {
         $produtos = Produto::all();
-        return view('produto_externo.new',compact('produtos'));
+        return view('produto_externo.new', compact('produtos'));
     }
 
     /**
@@ -62,7 +69,7 @@ class ProdutoExternoController extends Controller
         ProdutoExterno::create([
             'codigo_produto_externo' => $request->input('codigo_produto_externo'),
             'nome_produto_externo' => $request->input('nome_produto_externo'),
-            'id_produto' => $request->input('produto'),
+            'id_produto' => $request->input('id_produto'),
             'status' => $request->input('status')
         ]);
 
@@ -92,7 +99,7 @@ class ProdutoExternoController extends Controller
     {
         $produtos = Produto::all();
 
-        return view('produto_externo.edit',compact(['ProdutoExterno','produtos']));
+        return view('produto_externo.edit', compact(['ProdutoExterno', 'produtos']));
     }
 
     /**

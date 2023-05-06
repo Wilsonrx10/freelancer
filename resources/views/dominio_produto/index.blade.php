@@ -16,13 +16,18 @@
             </div>
         </div>
 
-        <div class="card-body">
-            <form method="get" action="{{route('dominioProduto.index')}}">
-                <div class="d-flex">
-                    <input type="search" name="search" class="form-control w-50 mb-2" placeholder="pesquisar...">
-                    <button type="submit" class="btn btn-info h-50 mx-2">buscar</button>
+        <div class="card-body" style="overflow-y:scroll">
+            <form method="GET" action="{{ route('dominioProduto.index') }}">
+                @include('dominio_produto._form_filtro')
+                <div class="row">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Buscar') }}
+                    </button>
                 </div>
             </form>
+        </div>
+
+        <div class="card-body">
             <table class="table table-bordered table-striped table-hover" id="data-table">
                 <thead class="thead-dark">
                 <tr>
@@ -38,7 +43,7 @@
                     <tr>
                         <td>{{ $item->url }}</td>
                         <td>{{ $item->produto->nome_produto}}</td>
-                        <td>{{ $item->status}}</td>
+                        <td>{{ $item->status == 1 ? 'ativo' : 'inativo'}}</td>
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                         <td class="text-center">
                             @include('shared._actions', [

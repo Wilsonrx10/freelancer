@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Produto;
+use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -17,11 +17,25 @@ class ProdutoController extends Controller
     {
         $produto = Produto::paginate();
 
-        if ($request->input('search')) {
-            $produto = Produto::query()
-            ->where('nome_produto', 'like', '%' . $request->input('search') . '%')
-            ->Orwhere('id', 'like', '%' . $request->input('search') . '%')
-            ->Orwhere('status', 'like', '%' . $request->input('search') . '%')->paginate();
+        if (!empty(request()->all())) {
+
+            $query = Produto::query();
+             
+            $camposPesquisa = array_keys(array_filter($request->only(['nome_produto', 'status', 'id']), function ($value, $key) {
+                return filled($value);
+            }, ARRAY_FILTER_USE_BOTH));
+            
+            foreach ($camposPesquisa as $campo) {
+                $valor = $request->input($campo);
+
+                if ($campo == 'nome_produto') {
+                    $query->where($campo, 'like', '%' . $valor . '%');
+                } else {
+                    $query->where($campo, $valor);
+                }
+            }
+
+            $produto = $query->paginate();
         }
 
         return view('produto.index', compact('produto'));

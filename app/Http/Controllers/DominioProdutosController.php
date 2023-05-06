@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DominioProduto;
-use App\Produto;
+use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -18,18 +18,32 @@ class DominioProdutosController extends Controller
     {
         $domain = DominioProduto::paginate();
 
-        if ($request->input('search')) {
+        if (!empty(request()->all())) {
 
-            $domain = DominioProduto::query()
-            ->join('produtos', 'dominio_produtos.id_produto', '=', 'produtos.id')
-                ->where(function($query) use ($request) {
-                $query->where('dominio_produtos.url', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('dominio_produtos.status', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produtos.nome_produto', 'like', '%' . $request->input('search') . '%');
-            })->paginate();
+            $query = DominioProduto::query()
+                ->join('produtos', 'dominio_produtos.id_produto', '=', 'produtos.id')
+                ->where(function ($query) use ($request) {
+
+                    $camposPesquisa = array_keys(array_filter($request->only(['nome_produto', 'status', 'id_produto']), function ($value, $key) {
+                        return filled($value);
+                    }, ARRAY_FILTER_USE_BOTH));
+
+                    foreach ($camposPesquisa as $campo) {
+                        $valor = $request->input($campo);
+                        if ($campo == 'nome_produto') {
+                            $query->where('produtos.' . $campo, 'like', '%' . $valor . '%');
+                        } else if ($campo == 'id') {
+                            $query->where('produtos.' . $campo, 'like', '%' . $valor . '%');
+                        } else {
+                            $query->where('dominio_produtos.' . $campo, $valor);
+                        }
+                    }
+                });
+
+            $domain = $query->paginate();
         }
 
-        return view('dominio_produto.index',compact('domain'));
+        return view('dominio_produto.index', compact('domain'));
     }
 
     /**
@@ -41,7 +55,7 @@ class DominioProdutosController extends Controller
     {
         $produtos = Produto::all();
 
-        return view('dominio_produto.new',compact('produtos'));
+        return view('dominio_produto.new', compact('produtos'));
     }
 
     /**
@@ -59,8 +73,9 @@ class DominioProdutosController extends Controller
         ]);
 
         DominioProduto::create([
-            'id_produto' => $request->input('produto'),
-            'url' => $request->input('url')
+            'id_produto' => $request->input('id_produto'),
+            'url' => $request->input('url'),
+            'status' => $request->input('status')
         ]);
 
         flash('Dominio de produto Adicionado com sucesso');
@@ -88,8 +103,8 @@ class DominioProdutosController extends Controller
     public function edit(DominioProduto $dominioProduto)
     {
         $produtos = Produto::all();
-        
-        return view('dominio_produto.edit',compact(['dominioProduto','produtos']));
+
+        return view('dominio_produto.edit', compact(['dominioProduto', 'produtos']));
     }
 
     /**
@@ -102,7 +117,7 @@ class DominioProdutosController extends Controller
     public function update(Request $request, DominioProduto $dominioProduto)
     {
         $request->validate([
-            'url' => 'required|url|unique:dominio_produtos,url,'.$dominioProduto->id,
+            'url' => 'required|url|unique:dominio_produtos,url,' . $dominioProduto->id,
             'id_produto' => 'required',
         ]);
 

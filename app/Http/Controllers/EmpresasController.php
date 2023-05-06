@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Empresa;
 use App\Models\UsuarioEmpresa;
 use Illuminate\Http\Request;
@@ -19,15 +20,29 @@ class EmpresasController extends Controller
     {
         $company = Empresa::paginate();
 
-        if ($request->input('search')) {
-            $company = Empresa::query()
-            ->where('nome_empresa', 'like', '%' . $request->input('search') . '%')
-            ->Orwhere('id', 'like', '%' . $request->input('search') . '%')
-            ->Orwhere('cnpj', 'like', '%' . $request->input('search') . '%')
-            ->Orwhere('status', 'like', '%' . $request->input('search') . '%')->paginate();
+        if (!empty(request()->all())) {
+
+            $query = Empresa::query();
+
+            $camposPesquisa = array_keys(array_filter($request->only(['nome_empresa', 'cnpj', 'status','id']), function ($value, $key) {
+                return filled($value);
+            }, ARRAY_FILTER_USE_BOTH));
+
+            foreach ($camposPesquisa as $campo) {
+                $valor = $request->input($campo);
+
+                if ($campo == 'nome_empresa' || $campo == 'cnpj') {
+                    $query->where($campo, 'like', '%' . $valor . '%');
+                } else {
+                    $query->where($campo, $valor);
+                }
+            }
+
+            $company = $query->paginate();
         }
-        
-        return view('empresa.index',compact('company'));
+
+
+        return view('empresa.index', compact('company'));
     }
 
     /**
@@ -94,7 +109,7 @@ class EmpresasController extends Controller
     {
         $request->validate([
             'nome_empresa' => 'required|string',
-            'cnpj' => 'required|min:14|max:14|unique:empresas,cnpj,'.$empresa->id,
+            'cnpj' => 'required|min:14|max:14|unique:empresas,cnpj,' . $empresa->id,
             'status' => 'required'
         ]);
 

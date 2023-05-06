@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Constants;
-use App\Produto;
-use App\ProdutoTelegramCanais;
+use App\Models\Produto;
+use App\Models\ProdutoTelegramCanais;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -19,17 +19,23 @@ class ProdutoTelegramCanaisController extends Controller
     {
         $ProdutoTelegram = ProdutoTelegramCanais::paginate();
 
-        if($request->search) {
-            $ProdutoTelegram = ProdutoTelegramCanais::query()
-            ->join('produtos', 'produto_telegram_canais.id_produto', '=', 'produtos.id')
-                ->where(function($query) use ($request) {
-                $query->where('produto_telegram_canais.id_telegram_canal', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produto_telegram_canais.nome_telegram_canal', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produto_telegram_canais.convite', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produto_telegram_canais.canal_admin', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produto_telegram_canais.status', 'like', '%' . $request->input('search') . '%')
-                ->orWhere('produtos.id_produto', 'like', '%' . $request->input('search') . '%');
-            })->paginate();
+        if (!empty(request()->all())) {
+
+            $query = ProdutoTelegramCanais::query();
+
+            $camposPesquisa = array_keys(array_filter($request->only(['nome_telegram_canal', 'code_telegram_canal', 'convite','canal_admin','status']), function ($value, $key) {
+                return filled($value);
+            }, ARRAY_FILTER_USE_BOTH));
+
+            foreach ($camposPesquisa as $campo) {
+                $valor = $request->input($campo);
+                if ($campo == 'nome_telegram_canal' || $campo == 'code_telegram_canal' || $campo == 'convite') {
+                    $query->where($campo, 'like', '%' . $valor . '%');
+                } else {
+                    $query->where($campo, $valor);
+                }
+            }
+            $ProdutoTelegram = $query->paginate();
         }
         
         return view('Produto_telegram.index',compact('ProdutoTelegram'));
