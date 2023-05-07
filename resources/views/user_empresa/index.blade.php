@@ -9,7 +9,7 @@
                <h3 class="modal-title">Usuarios Vinculado
                   ({{$empresa->usuarios()->whereHas('empresas', function ($query) use ($empresa) {
                   $query->where('empresa_id', $empresa->id)
-                  ->where('usuario_empresas.status', 1);
+                  ->where('usuario_empresas.status', '1');
                   })->count()}})
                </h3>
             </div>
