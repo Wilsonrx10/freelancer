@@ -203,7 +203,13 @@
     <link href="{{ asset('assets/DataTables/css/datatables.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{url('assets/tema/plugins/themify-icons/themify-icons.css')}}">
     <link href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
-
+    <style>
+        img.icone {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+    </style>
 
 </head>
 <body class="body-wrapper" data-spy="scroll" data-target=".privacy-nav">

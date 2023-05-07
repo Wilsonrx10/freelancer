@@ -45,7 +45,7 @@
                     <tr>
                         <td>{{ $item->nome_produto }}</td>
                         <td>{{ $item->descricao }}</td>
-                        <td><img src="{{asset('icone/image/'.$item->icone)}}" alt=""></td>
+                        <td><img class="icone" src="{{asset('storage/icone/image/'.$item->icone)}}" alt=""></td>
                         <td>{{ $item->modo_analise == 1 ? 'ativo' : 'inativo'}}</td>
                         <td>{{ $item->status == 1 ? 'ativo' : 'inativo'}}</td>
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>

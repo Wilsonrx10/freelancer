@@ -6,9 +6,12 @@
       <div class="card-header">
          <div class="row">
             <div class="col-md-5">
-               {{-- 
-               <h3 class="modal-title">{{ Illuminate\Support\Str::plural('Empresas', $company->count()) }} </h3>
-               --}}
+               <h3 class="modal-title">Usuarios Vinculado
+                  ({{$empresa->usuarios()->whereHas('empresas', function ($query) use ($empresa) {
+                  $query->where('empresa_id', $empresa->id)
+                  ->where('usuario_empresas.status', 1);
+                  })->count()}})
+               </h3>
             </div>
             <div class="col-md-7 page-action text-right">
                <a onclick="SubmitForm()" class="btn btn-primary btn-sm"> <i
@@ -28,39 +31,33 @@
             </thead>
             <tbody>
                @foreach ($usuarios as $item)
+               @php
+               $status = DB::table('usuario_empresas')->where('user_id',$item->id)->where('empresa_id',$empresa->id)->first()
+               @endphp
+               @if ($status)         
                <tr>
                   <td>{{ $item->name }}</td>
                   <td>{{ $item->email }}</td>
                   <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                   <td><input type="checkbox" name="vinculo[]" value="{{ $item->id }};{{ $item->empresas }}" class="user-checkbox"
-                     id="user-{{ $item->id }}" @if($item->empresas->contains($empresa)) checked @endif>
+                     id="user-{{ $item->id }}" @if($item->empresas->contains($empresa)
+                     && $status->status == 1
+                     ) checked @endif>
                   </td>
-                  {{-- 
-                  <td class="text-center">
-                     @include('shared._actions', [
-                     'entity' => 'empresa',
-                     'id' => $item->id
-                     ])
-                  </td>
-                  --}}
                </tr>
+               @endif
                @endforeach
             </tbody>
          </table>
-         {{-- 
-         <div class="text-center">
-            {{ $company->links() }}
-         </div>
-         --}}
       </div>
       <script>
-        
          $(document).ready(function() {
              $('#data-table').DataTable();
          });
-
+         
          let selectedUsers = [];
          let deselectUsers = [];
+         let empresa_id = @json($empresa->id);
          
          function SelectChecked() {
              document.querySelectorAll('.user-checkbox').forEach(function(checkbox) {
@@ -74,7 +71,7 @@
                          RemovePosition(deselectUsers,userId)
                      } else {
                         if (empresa) {
-                            let empresa_referente = empresa.find((item) => item.pivot.empresa_id === 1);
+                            let empresa_referente = empresa.find((item) => item.pivot.empresa_id === empresa_id);
                             if (empresa_referente) {
                                 let exists = deselectUsers.includes(userId);
                                 if(!exists) {
@@ -93,7 +90,7 @@
                  });
              });
          }
-
+         
          function RemovePosition(array,id) {
             let index = array.indexOf(id);
             if (index !== -1) {
@@ -102,9 +99,9 @@
          }
          
          function SubmitForm() {
-
+         
              csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
+         
              event.preventDefault();
              
              fetch('/saveUserEmpresa', {
@@ -114,7 +111,7 @@
                          'Content-Type': 'application/json'
                      },
                      body: JSON.stringify({
-                         empresa_id: @json($empresa->id),
+                         empresa_id: empresa_id,
                          selectedUsers: selectedUsers,
                          deselectUsers: deselectUsers
                      })
