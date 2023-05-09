@@ -34,18 +34,16 @@
                @php
                $status = DB::table('usuario_empresas')->where('user_id',$item->id)->where('empresa_id',$empresa->id)->first()
                @endphp
-               @if ($status)         
                <tr>
                   <td>{{ $item->name }}</td>
                   <td>{{ $item->email }}</td>
                   <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                   <td><input type="checkbox" name="vinculo[]" value="{{ $item->id }};{{ $item->empresas }}" class="user-checkbox"
                      id="user-{{ $item->id }}" @if($item->empresas->contains($empresa)
-                     && $status->status == 1
+                     && $status && $status->status == '1'
                      ) checked @endif>
                   </td>
                </tr>
-               @endif
                @endforeach
             </tbody>
          </table>

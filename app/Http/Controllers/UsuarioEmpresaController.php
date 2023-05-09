@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants;
 use App\Models\Empresa;
 use App\Models\User;
 use App\Models\UsuarioEmpresa;
@@ -12,7 +13,7 @@ class UsuarioEmpresaController extends Controller
 
     public function index($empresa)
     {
-        $usuarios = User::all();
+        $usuarios = User::where('id_tipo_usuario',Constants::tipoUsuarioProfissional)->get();
 
         $empresa = Empresa::findOrFail($empresa);
 
