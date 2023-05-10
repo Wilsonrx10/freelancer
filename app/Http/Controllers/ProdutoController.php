@@ -19,6 +19,9 @@ class ProdutoController extends Controller
 
         if (!empty(request()->all())) {
 
+            // Salvar o filtro na sessão
+            $request->session()->flash('filtro', $request->all());
+
             $query = Produto::query();
              
             $camposPesquisa = array_keys(array_filter($request->only(['nome_produto', 'status', 'id']), function ($value, $key) {
@@ -38,7 +41,9 @@ class ProdutoController extends Controller
             $produto = $query->paginate();
         }
 
-        return view('produto.index', compact('produto'));
+        $filtro = $request->session()->get('filtro');
+
+        return view('produto.index', compact('produto','filtro'));
     }
 
     /**

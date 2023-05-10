@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants;
 use App\Models\Empresa;
-use App\Models\UsuarioEmpresa;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
 class EmpresasController extends Controller
@@ -42,7 +39,7 @@ class EmpresasController extends Controller
         }
 
 
-        return view('empresa.index', compact('company'));
+        return view('empresa.index', compact(['company','filtro']));
     }
 
     /**
