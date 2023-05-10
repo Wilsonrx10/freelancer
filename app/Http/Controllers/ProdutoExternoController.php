@@ -16,6 +16,8 @@ class ProdutoExternoController extends Controller
      */
     public function index(Request $request)
     {
+        $filtro = (object) $request->all;
+
         $produtoExterno = ProdutoExterno::paginate();
 
         if (!empty(request()->all())) {
@@ -33,11 +35,13 @@ class ProdutoExternoController extends Controller
                 } else {
                     $query->where($campo, $valor);
                 }
+
+                $filtro->$campo = $valor;
             }
             $produtoExterno = $query->paginate();
         }
 
-        return view('produto_externo.index', compact('produtoExterno'));
+        return view('produto_externo.index', compact('produtoExterno','filtro'));
     }
 
     /**

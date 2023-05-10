@@ -16,13 +16,15 @@ class DominioProdutosController extends Controller
      */
     public function index(Request $request)
     {
+        $filtro = (object) $request->all();
+
         $domain = DominioProduto::paginate();
 
         if (!empty(request()->all())) {
 
             $query = DominioProduto::query()
                 ->join('produtos', 'dominio_produtos.id_produto', '=', 'produtos.id')
-                ->where(function ($query) use ($request) {
+                ->where(function ($query) use ($request,&$filtro) {
 
                     $camposPesquisa = array_keys(array_filter($request->only(['nome_produto', 'status', 'id_produto']), function ($value, $key) {
                         return filled($value);
@@ -37,13 +39,14 @@ class DominioProdutosController extends Controller
                         } else {
                             $query->where('dominio_produtos.' . $campo, $valor);
                         }
+                        $filtro->$campo = $valor;
                     }
                 });
 
             $domain = $query->paginate();
         }
 
-        return view('dominio_produto.index', compact('domain'));
+        return view('dominio_produto.index', compact('domain','filtro'));
     }
 
     /**

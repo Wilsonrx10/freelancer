@@ -15,19 +15,18 @@ class ProdutoController extends Controller
      */
     public function index(Request $request)
     {
+        $filtro = (object) $request->all();
+        
         $produto = Produto::paginate();
 
         if (!empty(request()->all())) {
 
-            // Salvar o filtro na sessão
-            $request->session()->flash('filtro', $request->all());
-
             $query = Produto::query();
-             
+
             $camposPesquisa = array_keys(array_filter($request->only(['nome_produto', 'status', 'id']), function ($value, $key) {
                 return filled($value);
             }, ARRAY_FILTER_USE_BOTH));
-            
+
             foreach ($camposPesquisa as $campo) {
                 $valor = $request->input($campo);
 
@@ -36,14 +35,14 @@ class ProdutoController extends Controller
                 } else {
                     $query->where($campo, $valor);
                 }
+
+                $filtro->$campo = $valor;
             }
 
             $produto = $query->paginate();
         }
 
-        $filtro = $request->session()->get('filtro');
-
-        return view('produto.index', compact('produto','filtro'));
+        return view('produto.index', compact('produto', 'filtro'));
     }
 
     /**

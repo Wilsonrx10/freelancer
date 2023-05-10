@@ -15,6 +15,8 @@ class EmpresasController extends Controller
      */
     public function index(Request $request)
     {
+        $filtro = (object) $request->all();
+        
         $company = Empresa::paginate();
 
         if (!empty(request()->all())) {
@@ -33,6 +35,8 @@ class EmpresasController extends Controller
                 } else {
                     $query->where($campo, $valor);
                 }
+
+                $filtro->$campo = $valor;
             }
 
             $company = $query->paginate();

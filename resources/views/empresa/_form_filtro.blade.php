@@ -34,8 +34,8 @@
 <div class="form-group @if ($errors->has('status')) has-error @endif">
     <label for="status">{{ __('status') }}</label>
     <select class="form-control" name="status">
-        <option value="1">ativo</option>
-        <option value="0">inativo</option>
+        <option {{ isset($filtro->status) && $filtro->status == 1 ? "selected" : "" }} value="1">ativo</option>
+        <option {{ isset($filtro->status) && $filtro->status == 0 ? "selected" : "" }} value="0">inativo</option>        
     </select>
     @if ($errors->has('status'))
         <span class="invalid-feedback" role="alert">
